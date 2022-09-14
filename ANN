@@ -1,0 +1,39 @@
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.metrics import MeanSquaredError
+from sklearn.metrics import r2_score
+
+model = Sequential()
+model.add(Dense(64, input_dim=train_data.shape[1], 
+                activation='relu'))
+model.add(Dropout(0.1))
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.1))
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.1))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(1, activation='linear'))
+
+model.compile(loss='mse', optimizer='adam',
+              metrics=[MeanSquaredError()])
+model.fit(train_data, train_out, 
+          epochs=500, batch_size=4)
+
+train_pred_ann=model.predict(train_data)
+print(r2_score(train_pred_ann,train_out))
+
+plt.scatter(train_pred_ann,train_out)
+plt.ylabel("Pedicted Value")
+plt.xlabel("Actual Value")
+plt.show()
+
+test_pred_ann=model.predict(test1_data)
+print(r2_score(test_pred_ann,test1_out))
+
+plt.scatter(test_pred_ann,test1_out)
+plt.ylabel("Pedicted Value")
+plt.xlabel("Actual Value")
+plt.show()
+
+print(model.summary())

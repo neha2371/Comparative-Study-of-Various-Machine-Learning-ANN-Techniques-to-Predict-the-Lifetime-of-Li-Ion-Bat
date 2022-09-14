@@ -1,0 +1,45 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import glob
+import os
+def sortKeyFunc(s):
+    return int(os.path.basename(s)[4:-4])
+
+def readTrainData(file_path):
+    files = glob.glob(file_path)
+    files.sort(key=sortKeyFunc) 
+    
+    l = len(files)
+    data = np.zeros((l,1000,99))
+    for k, file in enumerate(files):
+        cell = np.genfromtxt(file,delimiter=',')
+        data[k,:,:] = cell 
+    
+    return data
+
+def readTestData(file_path):
+    files = np.log10(np.genfromtxt(file_path))
+    #log is used for variance model. Refer paper in ReadMe for more information
+    return files
+
+train_data_org = readTrainData('input_train_data_filepath') 
+#Replace input_train_data_filepath of training data (under train in data folder)
+test1_data_org = readTrainData('input_test_data_filepath') 
+#Replace input_test_data_filepath of test data (under test1 in data folder)
+
+train_out = readTestData('output_train_data_filepath')      
+#Replace output_train_data_filepath of training data (under cycle_lives/train_cycle_lives in data folder)
+test1_out = readTestData('output_test_data_filepath')       
+#Replace output_test_data_filepath of test data (under cycle_lives/test1_cycle_lives in data folder)
+
+train_data = (train_data_org[:, ::10, 98]) - (train_data_org[:, ::10, 8])
+test1_data = (test1_data_org[:, ::10, 98]) -(test1_data_org[:, ::10, 8])
+#Applying variance model
+
+test1_data = np.concatenate([test1_data[:21], test1_data[22:]])
+test1_out = np.concatenate([test1_out[:21], test1_out[22:]])
+#Removing outlier as per the information given in dataset description
+
+
+

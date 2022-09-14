@@ -1,0 +1,21 @@
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import r2_score
+
+regressor = RandomForestRegressor(n_estimators = 1000,random_state = 0)
+regressor.fit(train_data, train_out)
+
+train_pred_rf= regressor.predict(train_data)
+print(r2_score(train_pred_rf,train_out))
+
+plt.scatter(train_pred_rf,train_out)
+plt.ylabel("Pedicted Value")
+plt.xlabel("Actual Value")
+plt.show()
+
+test1_pred_rf = regressor.predict(test1_data)
+print(r2_score(test1_pred_rf,test1_out))
+
+plt.scatter(test1_pred_rf,test1_out)
+plt.ylabel("Pedicted Value")
+plt.xlabel("Actual Value")
+plt.show()

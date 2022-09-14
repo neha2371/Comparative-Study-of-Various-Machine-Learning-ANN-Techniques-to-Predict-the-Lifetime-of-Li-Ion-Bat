@@ -1,0 +1,21 @@
+from sklearn.ensemble import AdaBoostRegressor
+from sklearn.metrics import r2_score
+
+adb_r = AdaBoostRegressor(n_estimators = 300)
+adb_r.fit(train_data, train_out)
+
+train_pred_adb = adb_r.predict(train_data)
+print(r2_score(train_pred_adb,train_out))
+
+plt.scatter(train_pred_adb,train_out)
+plt.ylabel("Pedicted Value")
+plt.xlabel("Actual Value")
+plt.show()
+
+test1_pred_adb = adb_r.predict(test1_data)
+print(r2_score(test1_pred_adb,test1_out))
+
+plt.scatter(test1_pred_adb,test1_out)
+plt.ylabel("Pedicted Value")
+plt.xlabel("Actual Value")
+plt.show()
